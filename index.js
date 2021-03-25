@@ -43,11 +43,15 @@ app.get('/api/posts', (req, res) => {
     res.send(req.query);
 });
 
-// Handle HTTP GET request
+// Handle HTTP GET requests
+app.get('/api/books', (req, res) => {
+    res.send(books);
+});
+
 app.get('/api/books/:id', (req, res) => {
     const book = books.find(book => book.id === +req.params.id);
     if (!book) {
-        res.status(404).send('The book with given ID was not found');
+        return res.status(404).send('The book with given ID was not found');
     }
     res.send(book);
 });
@@ -70,7 +74,7 @@ app.put(
     (req, res) => {
         const book = books.find(book => book.id === +req.params.id);
         if (!book) {
-            res.status(404).send('The book with given ID was not found');
+            return res.status(404).send('The book with given ID was not found');
         }
 
         const errors = validationResult(req);
@@ -84,6 +88,19 @@ app.put(
         res.send(book);
     }
 );
+
+// Handle HTTP DELETE request
+app.delete('/api/books/:id', (req, res) => {
+    const book = books.find(book => book.id === +req.params.id);
+    if (!book) {
+        return res.status(404).send('The book with given ID was not found');
+    }
+
+    const index = books.indexOf(book);
+    books.splice(index, 1);
+
+    res.send(book);
+});
 
 const port = process.env.PORT || 3000
 app.listen(port, () => console.log(`Listening on port ${port}...`));
