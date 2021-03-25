@@ -1,8 +1,13 @@
 const express = require('express');
+const helmet = require('helmet');
 const { checkSchema, validationResult } = require('express-validator');
 const app = express();
 
+// middleware pipeline
 app.use(express.json());
+app.use(helmet());
+// maybe use morgan for requests logging if needed, but should be configured only for development environment
+
 
 // Test data
 const books = [
