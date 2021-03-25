@@ -6,7 +6,13 @@ const app = express();
 // middleware pipeline
 app.use(express.json());
 app.use(helmet());
-// maybe use morgan for requests logging if needed, but should be configured only for development environment
+// ? maybe use morgan for requests logging if needed, but should be configured only for development environment
+/*
+    if (app.get('env') === 'development') {
+        app.use(morgan('tiny'));
+        console.log('Morgan enabled ...');
+    }
+ */
 
 
 // Test data
