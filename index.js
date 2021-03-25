@@ -1,4 +1,5 @@
 const express = require('express');
+const { checkSchema, validationResult } = require('express-validator');
 const app = express();
 
 app.use(express.json());
@@ -9,6 +10,17 @@ const books = [
     { id: 2, name: 'book 2' },
     { id: 3, name: 'book 3' }
 ];
+
+const booksSchema = {
+    name: {
+        isLength: {
+            errorMessage: 'Name should be at least 5 characters long',
+            options: {
+                min: 5
+            }
+        }
+    }
+};
 
 // Test routes
 app.get('/', (req, res) => {
@@ -50,6 +62,28 @@ app.post('/api/books', (req, res) => {
     books.push(book);
     res.send(book);
 });
+
+// Handle HTTP PUT request with validation
+app.put(
+    '/api/books/:id',
+    checkSchema(booksSchema),
+    (req, res) => {
+        const book = books.find(book => book.id === +req.params.id);
+        if (!book) {
+            res.status(404).send('The book with given ID was not found');
+        }
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                errors: errors.array()
+            });
+        };
+
+        book.name = req.body.name;
+        res.send(book);
+    }
+);
 
 const port = process.env.PORT || 3000
 app.listen(port, () => console.log(`Listening on port ${port}...`));
