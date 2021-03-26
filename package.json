@@ -2,9 +2,11 @@
   "name": "patronage21-js-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon server.js",
+    "standard:test": "standard",
+    "standard:fix": "standard --fix"
   },
   "repository": {
     "type": "git",
@@ -22,6 +24,7 @@
     "helmet": "^4.4.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "standard": "^16.0.3"
   }
 }
