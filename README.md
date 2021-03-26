@@ -24,3 +24,20 @@
 11. Handling errors
 12. ? Unit testing
 13. ? Integration testing
+
+# Setup
+
+In the project directory, you can run:
+
+```
+$ npm i
+```
+
+Installs the necessary packages
+
+```
+$ npm run dev
+```
+
+Runs the app in the development mode.<br />
+Open [http://localhost:8080](http://localhost:8080) to view it in the browser.
