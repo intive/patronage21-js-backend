@@ -1,11 +1,11 @@
-// example connect to db
+const mongoose = require('mongoose')
 
-// const mongoose = require('mongoose')
+const PORT = 27017
+const DB_NAME = 'patronage'
+const ADDRESS = `mongodb://localhost:${PORT}/${DB_NAME}`
 
-// const ADDRESS = 'mongodb://localhost:PORT/db-name'
+const connectDb = () => {
+  return mongoose.connect(ADDRESS, { useNewUrlParser: true, useUnifiedTopology: true })
+}
 
-// const connectDb = () => {
-//   return mongoose.connect(ADDRESS)
-// }
-
-// module.exports = connectDb
+module.exports = connectDb
