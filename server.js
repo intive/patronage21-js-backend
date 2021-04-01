@@ -2,15 +2,17 @@ const express = require('express')
 const dotenv = require('dotenv')
 
 const helmet = require('helmet')
+const morgan = require('morgan')
 
 const app = express()
 const usersSampleRoutes = require('./app/routes/users-sample')
 const connectDb = require('./config/connection')
 
-dotenv.config();
+dotenv.config()
 
 app.use(express.json())
 app.use(helmet())
+app.use(morgan('dev'))
 
 const PORT = process.env.PORT || 8080
 
