@@ -1,47 +1,42 @@
-// example data
-const users = [
-  { id: 1, name: 'Jan' },
-  { id: 2, name: 'Adam' },
-  { id: 3, name: 'Zbigniew' }
-]
+const UserSample = require('../models/user-sample')
 
-exports.getAllUsers = (_, res) => {
-  res.send(users)
+exports.getAllUsers = async (_, res) => {
+  const users = await UserSample.find()
+
+  res.json(users)
 }
 
-exports.getSingleUser = (req, res) => {
-  const user = users.find(user => user.id === parseInt(req.params.id))
+exports.getSingleUser = async (req, res) => {
+  const id = req.params.id
 
-  if (!user) return res.status(404).send('The user with given ID was not found')
-
-  res.send(user)
+  await UserSample.findOne({ _id: id }, (err, docs) => {
+    if (err) res.status(404).send('The user with given ID was not found')
+    else res.send(docs)
+  })
 }
 
-exports.addNewUser = (req, res) => {
-  const user = {
-    id: users.length + 1,
-    name: req.body.name
-  }
+exports.addNewUser = async (req, res) => {
+  const user = new UserSample({ name: req.body.name })
 
-  users.push(user)
-  res.send(user)
+  await user.save()
+  res.send('The user was created successfully')
 }
 
-exports.editUser = (req, res) => {
-  const user = users.find(user => user.id === parseInt(req.params.id))
+exports.editUser = async (req, res) => {
+  const id = req.params.id
+  const name = req.body.name
 
-  if (!user) return res.status(404).send('The user with given ID was not found')
-
-  user.name = req.body.name
-  res.send(user)
+  await UserSample.updateOne({ _id: id }, { name: name }, (err) => {
+    if (err) res.status(404).send('The user with given ID was not found')
+    else res.send('The user with given ID was edited')
+  })
 }
 
-exports.deleteUser = (req, res) => {
-  const user = users.find(user => user.id === parseInt(req.params.id))
+exports.deleteUser = async (req, res) => {
+  const id = req.params.id
 
-  if (!user) return res.status(404).send('The user with given ID was not found')
-
-  const index = users.indexOf(user)
-  users.splice(index, 1)
-  res.send(user)
+  await UserSample.deleteOne({ _id: id }, (err) => {
+    if (err) res.status(404).send('The user with given ID was not found')
+    else res.send('The user with given ID was deleted')
+  })
 }
