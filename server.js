@@ -1,10 +1,14 @@
 const express = require('express')
+const dotenv = require('dotenv')
+
 const helmet = require('helmet')
 const morgan = require('morgan')
 
 const app = express()
 const usersSampleRoutes = require('./app/routes/users-sample')
 const connectDb = require('./config/connection')
+
+dotenv.config()
 
 app.use(express.json())
 app.use(helmet())
