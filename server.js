@@ -18,6 +18,11 @@ const PORT = process.env.PORT || 8080
 
 app.use('/api/users-sample', usersSampleRoutes)
 
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger.json')
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+
 app.listen(PORT, () => {
   console.log(`Server started on port http://127.0.0.1:${PORT}`)
 
