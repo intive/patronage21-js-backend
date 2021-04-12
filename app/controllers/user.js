@@ -123,10 +123,14 @@ const activateUser = async (req, res) => {
     if (err) {
       res.status(404).send('Cannot find user in database')
     } else {
-      if (user.activationKey === activationKey) {
-
-      } else if (user.activationKey !== activationKey) {
-
+      if (user.active === true) {
+        res.status(200).send('User already active')
+      } else {
+        if (user.activationKey === activationKey) {
+          // update here
+        } else if (user.activationKey !== activationKey) {
+          res.status(200).sent('Wrong activation key')
+        }
       }
     }
   })
