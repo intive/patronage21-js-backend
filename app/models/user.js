@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+<<<<<<< HEAD
 const Schema = mongoose.Schema
 
 <<<<<<< HEAD
@@ -34,3 +35,24 @@ const userSchema = new mongoose.Schema({
 })
 
 module.exports = mongoose.model('User', userSchema)
+=======
+
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String
+  },
+  id: {
+    type: Number
+  },
+  active: {
+    type: Boolean
+  },
+  activationCode: {
+    type: Number
+  }
+})
+
+const User = mongoose.model('UserSample', userSchema)
+
+module.exports = User
+>>>>>>> e42d2df... added placeholder model, component and routes
