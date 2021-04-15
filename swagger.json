@@ -1,70 +1,31 @@
 {
     "swagger": "2.0",
     "info":{
-        "description": "This is example swagger documentation",
+        "description": "Patronative registration API",
         "version": "1.0.0",
-        "title": "Users sample"
+        "title": "Patronative"
     },
     "basePath": "/api",
     "tags": [
         {
-            "name": "users",
-            "description": "Everything about users"
+            "name": "user",
+            "description": "Endpoints related to user registration"
         }
     ],
     "paths": {
-        "/users-sample": {
-            "get": {
+        "/register": {
+            "post": {
                 "tags": [
-                    "users"
+                    "user"
                 ],
-                "summary": "Get a list of all users",
-                "produces": "application/json",
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-        "/users-sample/{id}": {
-            "get": {
-                "tags": [
-                    "users"
-                ],
-                "summary": "Get user with specific id",
-                "produces": "application/json",
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    },
-                    "404": {
-                        "description": "User not found"
-                    }
-                },
-                "parameters": [{
-                    "name": "id",
-                    "in": "path",
-                    "description": "ID of user you want to get",
-                    "required": "true"
-                }]
-            }
-        },
-        "/users-sample/new":{
-            "post":{
-                "tags":[
-                    "users"
-                ],
-                "summary": "Creates a new user",
-                "consumes":[
-                    "application/json"
-                ],
-                "produces":[
-                    "text/html"
-                ],
+                "summary": "Creates entry for user in database",
+                "consumes": "application/json",
                 "responses":{
                     "200":{
                         "description": "Success"
+                    },
+                    "500":{
+                        "description": "Error"
                     }
                 },
                 "parameters":[
@@ -74,85 +35,73 @@
                         "description":"User object",
                         "required": "true",
                         "schema":{
-                            "$ref": "#/definitions/UserSample"
+                            "$ref": "#/definitions/User"
                         }
-                    }
-                ]
-            }
-        },
-        "/users-sample/edit/{id}":{
-            "put":{
-                "tags":[
-                    "users"
-                ],
-                "summary": "Edits existing user",
-                "consumes":[
-                    "application/json"
-                ],
-                "produces":[
-                    "application/json"
-                ],
-                "responses":{
-                    "200": {
-                        "description": "Success"
-                    },
-                    "404": {
-                        "description": "User not found"
-                    }
-                },
-                "parameters":[
-                    {
-                        "in":"body",
-                        "name":"body",
-                        "description":"User object",
-                        "required":"true",
-                        "schema":{
-                            "$ref":"#/definitions/UserSample"
-                        }
-                    },
-                    {
-                    "name": "id",
-                    "in": "path",
-                    "description": "ID of user you want to edit",
-                    "required": "true"
-                    }
-                ]
-            }
-        },
-        "/users-sample/delete/{id}":{
-            "delete":{
-                "tags": [
-                    "users"
-                ],
-                "summary": "Deletes existing user",
-                "produces":[
-                    "text/html"
-                ],
-                "responses":{
-                    "200": {
-                        "description": "Success"
-                    },
-                    "404": {
-                        "description": "User not found"
-                    }
-                },
-                "parameters":[
-                    {
-                        "in":"path",
-                        "name":"id",
-                        "description": "ID of uset you want to delete",
-                        "required": "true"
                     }
                 ]
             }
         }
     },
     "definitions":{
-        "UserSample":{
+        "User": {
             "type": "object",
+            "required": [
+                "gender",
+                "name",
+                "surname",
+                "email",
+                "phone",
+                "technologies",
+                "password"
+            ],
             "properties":{
-                "name":{
+                "gender": {
+                    "type": "string",
+                    "enum": [
+                        "Pan",
+                        "Pani"
+                    ]
+                },
+                "name": {
                     "type": "string"
+                },
+                "surname": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                },
+                "phone":{
+                    "type": "integer",
+                    "minimum": 100000000
+                },
+                "technologies": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "JS",
+                            "Java",
+                            "QA",
+                            "Mobile"
+                        ]
+                    },
+                    "minItems": 1,
+                    "maxItems": 3
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 8
+                },
+                "activationCode": {
+                    "type": "integer",
+                    "minimum": 10000000,
+                    "maximum": 99999999
+                },
+                "active": {
+                    "type": "boolean",
+                    "default": "false"
                 }
             }
         }

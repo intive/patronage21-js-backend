@@ -2,6 +2,12 @@ const express = require('express')
 const dotenv = require('dotenv')
 const helmet = require('helmet')
 const morgan = require('morgan')
+const Ajv = require('ajv')
+const addFormats = require('ajv-formats')
+
+const ajv = new Ajv({ allErrors: true })
+addFormats(ajv)
+ajv.addVocabulary(['swagger', 'info', 'basePath', 'tags', 'paths'])
 
 const usersSampleRoutes = require('./app/routes/users-sample')
 const usersRoutes = require('./app/routes/user')
@@ -21,6 +27,8 @@ app.use('/api', usersRoutes)
 
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./swagger.json')
+
+ajv.addSchema(swaggerDocument, 'swagger.json')
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
