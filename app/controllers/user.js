@@ -11,7 +11,7 @@ const swaggerSchema = require('../../swagger.json')
 ajv.addSchema(swaggerSchema, 'swagger.json')
 
 const register = async (req, res, next) => {
-  const errors = {
+  /* const errors = {
     fields: {},
     general: []
   }
@@ -116,10 +116,56 @@ const register = async (req, res, next) => {
   } catch (err) {
     return res.status(500).send('Nieudana rejestracja').end()
   }
+  */
+  const {
+    gender,
+    name,
+    surname,
+    email,
+    phone,
+    technologies,
+    password: notHashedPassport
+  } = req.body
 
-  createdUser.password = undefined
+  const validateUser = ajv.compile({ $ref: 'swagger.json#/definitions/User' })
+  const valid = validateUser(req.body)
+  if (!valid) {
+    // Wysyła domyślną tablicę błędów generowaną przez ajv, wymaga modyfikacji
+    return res.status(400).send(validateUser.errors).end()
+  } else {
+    let existingUser
+    try {
+      existingUser = await User.findOne({
+        email: email
+      })
+    } catch (err) {
+      return res.status(500).send('Nieudana rejestracja').end()
+    }
 
-  res.status(200).send(createdUser).end()
+    let password
+    try {
+      password = await bcrypt.hash(notHashedPassport, 12)
+    } catch (err) {
+      return res.status(500).send('Nieudana rejestracja').end()
+    }
+
+    const createdUser = new User({
+      gender,
+      name,
+      surname,
+      email,
+      phone,
+      technologies,
+      password
+    })
+
+    try {
+      await createdUser.save()
+    } catch (err) {
+      return res.status(500).send('Nieudana rejestracja').end()
+    }
+  }
+  res.status(200).send('Udana rejestracja').end()
 }
 
 exports.register = register
