@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+<<<<<<< HEAD
 const userSchema = new Schema({
   title: { type: String, required: true },
   firstName: { type: String, required: true },
@@ -18,6 +19,18 @@ const userSchema = new Schema({
   login: { type: String, required: true, unique: true },
   githubLink: { type: String, required: true },
   password: { type: String, required: true }
+=======
+const userSchema = new mongoose.Schema({
+  id: {
+    type: String
+  },
+  active: {
+    type: Boolean
+  },
+  activationKey: {
+    type: Number
+  }
+>>>>>>> 6730010... IP2-292 model and controller refactor
 })
 
 module.exports = mongoose.model('User', userSchema)
