@@ -38,16 +38,13 @@ module.exports = mongoose.model('User', userSchema)
 =======
 
 const userSchema = new mongoose.Schema({
-  name: {
-    type: String
-  },
   id: {
-    type: Number
+    type: String
   },
   active: {
     type: Boolean
   },
-  activationCode: {
+  activationKey: {
     type: Number
   }
 })
