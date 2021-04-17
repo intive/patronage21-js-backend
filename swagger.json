@@ -46,12 +46,14 @@
         "User": {
             "type": "object",
             "required": [
-                "gender",
-                "name",
-                "surname",
+                "title",
+                "firstName",
+                "lastName",
                 "email",
                 "phone",
                 "technologies",
+                "login",
+                "githubLink",
                 "password"
             ],
             "properties":{
@@ -62,10 +64,10 @@
                         "Pani"
                     ]
                 },
-                "name": {
+                "firstName": {
                     "type": "string"
                 },
-                "surname": {
+                "lastName": {
                     "type": "string"
                 },
                 "email": {
@@ -74,7 +76,8 @@
                 },
                 "phone":{
                     "type": "integer",
-                    "minimum": 100000000
+                    "minimum": 100000000,
+                    "maximum": 999999999
                 },
                 "technologies": {
                     "type": "array",
@@ -102,6 +105,10 @@
                 "active": {
                     "type": "boolean",
                     "default": "false"
+                },
+                "githubUrl": {
+                    "type": "string",
+                    "format": "url"
                 }
             }
         }
