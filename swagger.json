@@ -68,6 +68,7 @@
                     }
                 },
                 "firstName": {
+<<<<<<< HEAD
                     "type": "string",
                     "maxLength": 20,
                     "errorMessage": {
@@ -80,6 +81,12 @@
                     "errorMessage": {
                         "maxLength": "Nazwisko jest za długie"
                     }
+=======
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+>>>>>>> b3c98ce... request fields unification
                 },
                 "email": {
                     "type": "string",
@@ -91,12 +98,16 @@
                 "phone":{
                     "type": "integer",
                     "minimum": 100000000,
+<<<<<<< HEAD
                     "maximum": 999999999,
                     "errorMessage": {
                         "type": "Numer powinien składać się wyłącznie z cyfr",
                         "minimum": "Numer jest za krótki",
                         "maximum": "Numer jest za długi"
                     }
+=======
+                    "maximum": 999999999
+>>>>>>> b3c98ce... request fields unification
                 },
                 "technologies": {
                     "type": "array",
