@@ -35,46 +35,53 @@ const register = async (req, res, next) => {
       validateUser.errors.forEach(element => {
         if (element.instancePath === '') {
           const field = element.params.errors[0].params.missingProperty
-          errors.fields[field] = element.message
+          errors.fields[field] = [element.message]
         } else {
-          const field = element.instancePath.slice(1)
-          if (!errors.fields.field) {
-            errors.fields[field] = element.message
+          const field = element.instancePath.split('/')[1]
+          if (!errors.fields[field]) {
+            errors.fields[field] = [element.message]
           } else {
             errors.fields[field].push(element.message)
           }
         }
       })
-      return res.status(400).send(errors).end()
     } catch (err) {
       return res.status(500).send('Nieudana rejestracja').end()
     }
   } else {
-    let existingUser
+    let existingEmail
     try {
-      existingUser = await User.findOne({
+      existingEmail = await User.findOne({
         email: email
       })
     } catch (err) {
       return res.status(500).send('Nieudana rejestracja').end()
     }
+
+    let existingLogin
     try {
-      existingUser = await User.findOne({
+      existingLogin = await User.findOne({
         login: login
       })
     } catch (err) {
       return res.satus(500).send('Nieudana rejestracja').end()
     }
 
-    if (existingUser) {
+    if (existingEmail) {
       if (!errors.fields.email) {
         errors.fields.email = []
       }
       errors.fields.email.push('Email jest już zajęty')
+    }
+
+    if (existingLogin) {
       if (!errors.fields.login) {
         errors.fields.login = []
       }
       errors.fields.login.push('Login jest już zajęty')
+    }
+
+    if (Object.keys(errors.fields).length !== 0 || errors.general.length > 0) {
       return res.status(400).send(errors).end()
     }
 

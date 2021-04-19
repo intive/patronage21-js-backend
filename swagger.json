@@ -57,7 +57,7 @@
                 "password"
             ],
             "properties":{
-                "gender": {
+                "title": {
                     "type": "string",
                     "enum": [
                         "Pan",
@@ -68,10 +68,18 @@
                     }
                 },
                 "firstName": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 20,
+                    "errorMessage": {
+                        "maxLength": "Imię jest za długie"
+                    }
                 },
                 "lastName": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 20,
+                    "errorMessage": {
+                        "maxLength": "Nazwisko jest za długie"
+                    }
                 },
                 "email": {
                     "type": "string",
@@ -114,8 +122,10 @@
                 "password": {
                     "type": "string",
                     "minLength": 8,
+                    "pattern": "[A-Z]+",
                     "errorMessage": {
-                        "minLength": "Hasło musi składać się z conajmniej ośmiu znaków"
+                        "minLength": "Hasło musi składać się z co najmniej ośmiu znaków",
+                        "pattern": "Hasło musi mieć przynajmniej jedną dużą literę"
                     }
                 },
                 "activationCode": {
@@ -127,11 +137,11 @@
                     "type": "boolean",
                     "default": "false"
                 },
-                "githubUrl": {
+                "githubLink": {
                     "type": "string",
-                    "format": "url",
+                    "pattern": "((https?):\/\/)?(www.)?github.com\/[0-9a-zA-Z.-]+$",
                     "errorMessage": {
-                        "format": "Niepoprawny link"
+                        "pattern": "Niepoprawny link"
                     }
                 }
             },
