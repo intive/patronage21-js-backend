@@ -16,7 +16,7 @@ const userSchema = new Schema({
     ],
     required: true
   },
-  login: { type: String, required: true },
+  login: { type: String, required: true, unique: true },
   githubLink: { type: String, required: true },
   password: { type: String, required: true }
 })
