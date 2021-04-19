@@ -117,6 +117,11 @@ const register = async (req, res, next) => {
     return res.status(500).send('Nieudana rejestracja').end()
   }
   */
+  const errors = {
+    fields: {},
+    general: []
+  }
+
   const {
     title,
     firstName,
@@ -132,8 +137,24 @@ const register = async (req, res, next) => {
   const validateUser = ajv.compile({ $ref: 'swagger.json#/definitions/User' })
   const valid = validateUser(req.body)
   if (!valid) {
-    // Wysyła domyślną tablicę błędów generowaną przez ajv, ?wymaga modyfikacji?
-    return res.status(400).send(validateUser.errors).end()
+    try {
+      validateUser.errors.forEach(element => {
+        if (element.instancePath === '') {
+          const field = element.params.errors[0].params.missingProperty
+          errors.fields[field] = element.message
+        } else {
+          const field = element.instancePath.slice(1)
+          if (!errors.fields.field) {
+            errors.fields[field] = element.message
+          } else {
+            errors.fields[field].push(element.message)
+          }
+        }
+      })
+      return res.status(400).send(errors).end()
+    } catch (err) {
+      return res.status(500).send('Nieudana rejestracja').end()
+    }
   } else {
     let existingUser
     try {
@@ -141,20 +162,39 @@ const register = async (req, res, next) => {
         email: email
       })
     } catch (err) {
-      return res.status(500).send(`Nieudana rejestracja (${err})`).end()
+      return res.status(500).send('Nieudana rejestracja').end()
+    }
+    try {
+      existingUser = await User.findOne({
+        login: login
+      })
+    } catch (err) {
+      return res.satus(500).send('Nieudana rejestracja').end()
+    }
+
+    if (existingUser) {
+      if (!errors.fields.email) {
+        errors.fields.email = []
+      }
+      errors.fields.email.push('Email jest już zajęty')
+      if (!errors.fields.login) {
+        errors.fields.login = []
+      }
+      errors.fields.login.push('Login jest już zajęty')
+      return res.status(400).send(errors).end()
     }
 
     let password
     try {
       password = await bcrypt.hash(notHashedPassport, 12)
     } catch (err) {
-      return res.status(500).send(`Nieudana rejestracja (${err})`).end()
+      return res.status(500).send('Nieudana rejestracja').end()
     }
     let activationCode
     try {
       activationCode = await Math.floor(Math.random() * (99999999 - 10000000) + 10000000)
     } catch (err) {
-      return res.status(500).send(`Nieudana rejestracja (${err})`).end()
+      return res.status(500).send('Nieudana rejestracja').end()
     }
 
     const createdUser = new User({
@@ -173,7 +213,7 @@ const register = async (req, res, next) => {
     try {
       await createdUser.save()
     } catch (err) {
-      return res.status(500).send(`Nieudana rejestracja (${err})`).end()
+      return res.status(500).send('Nieudana rejestracja').end()
     }
   }
   res.status(200).send('Udana rejestracja').end()
