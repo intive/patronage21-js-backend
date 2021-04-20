@@ -4,7 +4,7 @@
 
 1. [Express](https://expressjs.com/) - minimalist web framework for Node.js
 2. [nodemon](https://nodemon.io/) - monitors changes in the source code and automatically restarts the server
-3. [express-validator](https://express-validator.github.io/docs/) - express.js middleware for inputs validation
+3. ~~[express-validator](https://express-validator.github.io/docs/) - express.js middleware for inputs validation~~
 4. [helmet](https://github.com/helmetjs/helmet) - helps secure app by setting various HTTP headers
 5. [morgan](http://expressjs.com/en/resources/middleware/morgan.html) -  HTTP request logger middleware for Node.js
 6. [mongoose]('https://www.npmjs.com/package/mongoose') - object modeling tool for MongoDB designed to work in an asynchronous environment, output validation for schemas
