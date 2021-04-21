@@ -24,7 +24,7 @@ To run this project, install it locally using [Docker](https://www.docker.com/):
 Add to .env file
 
 ```
-ADRESS=mongo
+ADDRESS=mongo
 ```
 
 ### Available Scripts
