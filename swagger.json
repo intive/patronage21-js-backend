@@ -122,10 +122,10 @@
                 "password": {
                     "type": "string",
                     "minLength": 8,
-                    "pattern": "[A-Z]+",
+                    "pattern": "^(?=.*[!@#$%^&*()-+])(?=.*[A-Z])",
                     "errorMessage": {
                         "minLength": "Hasło musi składać się z co najmniej ośmiu znaków",
-                        "pattern": "Hasło musi mieć przynajmniej jedną dużą literę"
+                        "pattern": "Hasło musi mieć przynajmniej jedną dużą literę i jeden znak specjalny"
                     }
                 },
                 "activationCode": {
