@@ -20,6 +20,10 @@
   },
   "homepage": "https://github.com/intive/patronage21-js-backend#readme",
   "dependencies": {
+    "ajv": "^8.1.0",
+    "ajv-errors": "^3.0.0",
+    "ajv-formats": "^2.0.2",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.10.0",

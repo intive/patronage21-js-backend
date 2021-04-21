@@ -1,70 +1,31 @@
 {
     "swagger": "2.0",
     "info":{
-        "description": "This is example swagger documentation",
+        "description": "Patronative registration API",
         "version": "1.0.0",
-        "title": "Users sample"
+        "title": "Patronative"
     },
     "basePath": "/api",
     "tags": [
         {
-            "name": "users",
-            "description": "Everything about users"
+            "name": "user",
+            "description": "Endpoints related to user registration"
         }
     ],
     "paths": {
-        "/users-sample": {
-            "get": {
+        "/register": {
+            "post": {
                 "tags": [
-                    "users"
+                    "user"
                 ],
-                "summary": "Get a list of all users",
-                "produces": "application/json",
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-        "/users-sample/{id}": {
-            "get": {
-                "tags": [
-                    "users"
-                ],
-                "summary": "Get user with specific id",
-                "produces": "application/json",
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    },
-                    "404": {
-                        "description": "User not found"
-                    }
-                },
-                "parameters": [{
-                    "name": "id",
-                    "in": "path",
-                    "description": "ID of user you want to get",
-                    "required": "true"
-                }]
-            }
-        },
-        "/users-sample/new":{
-            "post":{
-                "tags":[
-                    "users"
-                ],
-                "summary": "Creates a new user",
-                "consumes":[
-                    "application/json"
-                ],
-                "produces":[
-                    "text/html"
-                ],
+                "summary": "Creates entry for user in database",
+                "consumes": "application/json",
                 "responses":{
                     "200":{
                         "description": "Success"
+                    },
+                    "500":{
+                        "description": "Error"
                     }
                 },
                 "parameters":[
@@ -74,86 +35,129 @@
                         "description":"User object",
                         "required": "true",
                         "schema":{
-                            "$ref": "#/definitions/UserSample"
+                            "$ref": "#/definitions/User"
                         }
-                    }
-                ]
-            }
-        },
-        "/users-sample/edit/{id}":{
-            "put":{
-                "tags":[
-                    "users"
-                ],
-                "summary": "Edits existing user",
-                "consumes":[
-                    "application/json"
-                ],
-                "produces":[
-                    "application/json"
-                ],
-                "responses":{
-                    "200": {
-                        "description": "Success"
-                    },
-                    "404": {
-                        "description": "User not found"
-                    }
-                },
-                "parameters":[
-                    {
-                        "in":"body",
-                        "name":"body",
-                        "description":"User object",
-                        "required":"true",
-                        "schema":{
-                            "$ref":"#/definitions/UserSample"
-                        }
-                    },
-                    {
-                    "name": "id",
-                    "in": "path",
-                    "description": "ID of user you want to edit",
-                    "required": "true"
-                    }
-                ]
-            }
-        },
-        "/users-sample/delete/{id}":{
-            "delete":{
-                "tags": [
-                    "users"
-                ],
-                "summary": "Deletes existing user",
-                "produces":[
-                    "text/html"
-                ],
-                "responses":{
-                    "200": {
-                        "description": "Success"
-                    },
-                    "404": {
-                        "description": "User not found"
-                    }
-                },
-                "parameters":[
-                    {
-                        "in":"path",
-                        "name":"id",
-                        "description": "ID of uset you want to delete",
-                        "required": "true"
                     }
                 ]
             }
         }
     },
     "definitions":{
-        "UserSample":{
+        "User": {
             "type": "object",
+            "required": [
+                "title",
+                "firstName",
+                "lastName",
+                "email",
+                "phone",
+                "technologies",
+                "login",
+                "githubLink",
+                "password"
+            ],
             "properties":{
-                "name":{
-                    "type": "string"
+                "title": {
+                    "type": "string",
+                    "enum": [
+                        "Pan",
+                        "Pani"
+                    ],
+                    "errorMessage": {
+                        "enum": "Niedozwolona wartość"
+                    }
+                },
+                "firstName": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "errorMessage": {
+                        "maxLength": "Imię jest za długie"
+                    }
+                },
+                "lastName": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "errorMessage": {
+                        "maxLength": "Nazwisko jest za długie"
+                    }
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "errorMessage": {
+                        "format": "Niepoprawny email"
+                    }
+                },
+                "phone":{
+                    "type": "integer",
+                    "minimum": 100000000,
+                    "maximum": 999999999,
+                    "errorMessage": {
+                        "type": "Numer powinien składać się wyłącznie z cyfr",
+                        "minimum": "Numer jest za krótki",
+                        "maximum": "Numer jest za długi"
+                    }
+                },
+                "technologies": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "JS",
+                            "Java",
+                            "QA",
+                            "Mobile"
+                        ],
+                        "errorMessage": {
+                            "enum": "Niedozwolona wartość"
+                        }
+                    },
+                    "minItems": 1,
+                    "maxItems": 3,
+                    "errorMessage": {
+                        "minItems": "Proszę wybrać conajmniej jedną technologię",
+                        "maxItems": "Proszę wybrać maksymanie trzy technologie"
+                    }
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 8,
+                    "pattern": "^(?=.*[!@#$%^&*()-+])(?=.*[A-Z])",
+                    "errorMessage": {
+                        "minLength": "Hasło musi składać się z co najmniej ośmiu znaków",
+                        "pattern": "Hasło musi mieć przynajmniej jedną dużą literę i jeden znak specjalny"
+                    }
+                },
+                "activationCode": {
+                    "type": "integer",
+                    "minimum": 10000000,
+                    "maximum": 99999999
+                },
+                "active": {
+                    "type": "boolean",
+                    "default": "false"
+                },
+                "githubLink": {
+                    "type": "string",
+                    "pattern": "((https?):\/\/)?(www.)?github.com\/[0-9a-zA-Z.-]+$",
+                    "errorMessage": {
+                        "pattern": "Niepoprawny link"
+                    }
                 }
+            },
+            "errorMessage": {
+                "required": {
+                    "title": "Proszę wybrać tytuł",
+                    "firstName": "Imie jest wymagane",
+                    "lastName": "Nazwisko jest wymagane",
+                    "email": "Email jest wymagany",
+                    "phone": "Numer telefonu jest wymagany",
+                    "technologies": "Proszę wybrać conajmniej jedną technologię",
+                    "login": "Login jest wymagany",
+                    "githubLink": "Link do github jest wymagany",
+                    "password" : "Hasło jest wymagane"
+                }
+
             }
         }
     }
