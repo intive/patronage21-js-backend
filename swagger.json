@@ -131,7 +131,11 @@
                 "activationCode": {
                     "type": "integer",
                     "minimum": 10000000,
-                    "maximum": 99999999
+                    "maximum": 99999999,
+                    "errorMessage": {
+                        "minimum": "Kod jest za krótki",
+                        "maximum": "Kod jest za długi"
+                    }
                 },
                 "active": {
                     "type": "boolean",
@@ -158,6 +162,37 @@
                     "password" : "Hasło jest wymagane"
                 }
 
+            }
+        },
+        "activationData": {
+            "type": "object",
+            "required": [
+                "email",
+                "activationCode"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "errorMessage": {
+                        "format": "Niepoprawny email"
+                    }
+                },
+                "activationCode": {
+                    "type": "integer",
+                    "minimum": 10000000,
+                    "maximum": 99999999,
+                    "errorMessage": {
+                        "minimum": "Kod jest za krótki",
+                        "maximum": "Kod jest za długi"
+                    }
+                }
+            },
+            "errorMessage": {
+                "required": {
+                    "email": "Email jest wymagany",
+                    "activationCode": "Kod aktywacyjny jest wymagany"
+                }
             }
         }
     }
