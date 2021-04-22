@@ -116,41 +116,38 @@ const register = async (req, res, next) => {
 exports.register = register
 
 const activateUser = async (req, res) => {
-  const id = req.body.id
-  const activationKey = req.body.activationKey
-  const query = User.where({ id: id })
-  query.findOne(async (err, user) => {
-    if (err) {
-      res.status(404).send('Cannot find user in database')
-    } else {
-      if (user.active === true) {
-        res.status(409).send('User already active')
-      } else {
-        if (user.activationKey === activationKey) {
-          await
-        } else if (user.activationKey !== activationKey) {
-          res.status(409).sent('Wrong activation key')
-        }
-
-exports.activateUser = async (req, res) => {
-  const id = req.body.id
-  const activationKey = req.body.activationKey
-  const query = User.where({ id: id })
-  query.findOne(async (err, user) => {
-    if (err) {
-      res.status(404).send('Cannot find user in database')
-    } else {
-      if (user.active === true) {
-        res.status(409).send('User already active')
-      } else {
-        if (user.activationKey === activationKey) {
-          await
-        } else if (user.activationKey !== activationKey) {
-          res.status(409).sent('Wrong activation key')
+  const {
+    email,
+    activationCode
+  } = req.body
+  try {
+    await User.where({ email: email }).findOne((error, existingUser) => {
+      if (error) {
+        return res.status(500).send('Nieudana aktywacja').end()
+      }
+      if (!existingUser) {
+        return res.status(404).send('Uzytkownik nie istnieje 1')
+      }
+      if (existingUser) {
+        if (existingUser.active === true) {
+          return res.status(409).send('Uzytkownik jest juz aktywny').end()
+        } else if (existingUser.activationCode !== activationCode) {
+          return res.status(409).send('Bledny kod').end()
+        } else if (existingUser.activationCode === activationCode) {
+          try {
+            User.where({ email: email }).update({ $set: { active: true } }, () => {
+              // sendEmail()
+              res.status(200).send('Aktywacja udana')
+            })
+          } catch (err) {
+            return res.status(500).send('Nieudana aktywacja').end()
+          }
         }
       }
-    }
-  })
+    })
+  } catch (err) {
+    res.status(500).send('Nieudana aktywacja')
+  }
 }
 
 exports.activateUser = activateUser

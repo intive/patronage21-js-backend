@@ -1,8 +1,7 @@
 const mongoose = require('mongoose')
-<<<<<<< HEAD
+
 const Schema = mongoose.Schema
 
-<<<<<<< HEAD
 const userSchema = new Schema({
   title: { type: String, required: true },
   firstName: { type: String, required: true },
@@ -19,37 +18,9 @@ const userSchema = new Schema({
   },
   login: { type: String, required: true, unique: true },
   githubLink: { type: String, required: true },
-  password: { type: String, required: true }
-=======
-const userSchema = new mongoose.Schema({
-  id: {
-    type: String
-  },
-  active: {
-    type: Boolean
-  },
-  activationKey: {
-    type: Number
-  }
->>>>>>> 6730010... IP2-292 model and controller refactor
+  password: { type: String, required: true },
+  active: { type: Boolean, default: false },
+  activationCode: { type: Number, required: true }
 })
 
 module.exports = mongoose.model('User', userSchema)
-=======
-
-const userSchema = new mongoose.Schema({
-  id: {
-    type: String
-  },
-  active: {
-    type: Boolean
-  },
-  activationKey: {
-    type: Number
-  }
-})
-
-const User = mongoose.model('UserSample', userSchema)
-
-module.exports = User
->>>>>>> e42d2df... added placeholder model, component and routes
