@@ -121,7 +121,7 @@ const activateUser = async (req, res) => {
     general: []
   }
 
-  const validateUser = ajv.compile({ $ref: 'swagger.json#/definitions/User' })
+  const validateUser = ajv.compile({ $ref: 'swagger.json#/definitions/activationData' })
   const valid = validateUser(req.body)
 
   if (!valid) {
