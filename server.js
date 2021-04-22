@@ -4,6 +4,7 @@ const helmet = require('helmet')
 const morgan = require('morgan')
 const Ajv = require('ajv')
 const addFormats = require('ajv-formats')
+const cors = require('cors')
 
 const ajv = new Ajv({ allErrors: true })
 addFormats(ajv)
@@ -16,6 +17,9 @@ const connectDb = require('./config/connection')
 
 const app = express()
 
+app.use(cors({
+  origin: 'http://localhost:3000'
+}))
 app.use(express.json())
 app.use(helmet())
 app.use(morgan('dev'))
