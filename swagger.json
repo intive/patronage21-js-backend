@@ -46,7 +46,6 @@
         "User": {
             "type": "object",
             "required": [
-                "title",
                 "firstName",
                 "lastName",
                 "email",
@@ -57,16 +56,6 @@
                 "password"
             ],
             "properties":{
-                "title": {
-                    "type": "string",
-                    "enum": [
-                        "Pan",
-                        "Pani"
-                    ],
-                    "errorMessage": {
-                        "enum": "Niedozwolona wartość"
-                    }
-                },
                 "firstName": {
                     "type": "string",
                     "maxLength": 20,
