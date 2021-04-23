@@ -17,7 +17,6 @@ const register = async (req, res, next) => {
   }
 
   const {
-    title,
     firstName,
     lastName,
     email,
@@ -99,7 +98,6 @@ const register = async (req, res, next) => {
   }
 
   const createdUser = new User({
-    title,
     firstName,
     lastName,
     email,
