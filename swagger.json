@@ -59,15 +59,19 @@
                 "firstName": {
                     "type": "string",
                     "maxLength": 20,
+                    "minLength": 3,
                     "errorMessage": {
-                        "maxLength": "Imię jest za długie"
+                        "maxLength": "Imię jest za długie",
+                        "minLength": "Imię musi mieć co najmniej 3 znaki"
                     }
                 },
                 "lastName": {
                     "type": "string",
                     "maxLength": 20,
+                    "minLength": 3,
                     "errorMessage": {
-                        "maxLength": "Nazwisko jest za długie"
+                        "maxLength": "Nazwisko jest za długie",
+                        "minLength": "Nazwisko musi mieć co najmniej 2 znaki"
                     }
                 },
                 "email": {
@@ -75,6 +79,15 @@
                     "format": "email",
                     "errorMessage": {
                         "format": "Niepoprawny email"
+                    }
+                },
+                "login": {
+                    "type": "string",
+                    "maxLength": 15,
+                    "minLength": 2,
+                    "errorMessage": {
+                        "maxLength": "Login musi mieć mniej niż 15 znaków",
+                        "minLength": "Login musi mieć co najmniej 2 znaki"
                     }
                 },
                 "phone":{
