@@ -68,7 +68,7 @@
                 "lastName": {
                     "type": "string",
                     "maxLength": 20,
-                    "minLength": 3,
+                    "minLength": 2,
                     "errorMessage": {
                         "maxLength": "Nazwisko jest za długie",
                         "minLength": "Nazwisko musi mieć co najmniej 2 znaki"
