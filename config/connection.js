@@ -5,6 +5,7 @@ const DB_NAME = 'patronage'
 const ADDRESS = `mongodb://${process.env.ADDRESS || 'localhost'}:${PORT}/${DB_NAME}`
 
 const connectDb = () => {
+  console.log(`DB address: ${ADDRESS}`)
   return mongoose.connect(ADDRESS, { useNewUrlParser: true, useUnifiedTopology: true })
 }
 

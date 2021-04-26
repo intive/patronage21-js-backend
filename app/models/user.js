@@ -17,7 +17,8 @@ const userSchema = new Schema({
   },
   login: { type: String, required: true, unique: true },
   githubLink: { type: String, required: true },
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+  activationCode: { type: Number, min: 10000000, max: 99999999, required: true }
 })
 
 module.exports = mongoose.model('User', userSchema)

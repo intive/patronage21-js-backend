@@ -1,4 +1,5 @@
 const User = require('../models/user')
+const generateActivationCode = require('../utils/activationCodeGenerator')
 const bcrypt = require('bcryptjs')
 const Ajv = require('ajv')
 const addFormats = require('ajv-formats')
@@ -48,6 +49,7 @@ const register = async (req, res, next) => {
       return res.status(500).send('Nieudana rejestracja').end()
     }
   }
+
   let existingEmail
   try {
     existingEmail = await User.findOne({
@@ -63,7 +65,7 @@ const register = async (req, res, next) => {
       login: login
     })
   } catch (err) {
-    return res.satus(500).send('Nieudana rejestracja').end()
+    return res.status(500).send('Nieudana rejestracja').end()
   }
 
   if (existingEmail) {
@@ -90,9 +92,10 @@ const register = async (req, res, next) => {
   } catch (err) {
     return res.status(500).send('Nieudana rejestracja').end()
   }
+
   let activationCode
   try {
-    activationCode = await Math.floor(Math.random() * (99999999 - 10000000) + 10000000)
+    activationCode = generateActivationCode()
   } catch (err) {
     return res.status(500).send('Nieudana rejestracja').end()
   }
