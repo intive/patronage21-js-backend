@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const generateActivationCode = require('../utils/activationCodeGenerator')
+const emailSender = require('../services/mail-sender')
 
 const sendActivationCode = async (req, res) => {
   const id = req.params.id
@@ -23,7 +24,8 @@ const sendActivationCode = async (req, res) => {
     return res.status(500).send('Wysłanie kodu nie powiodło się').end()
   }
 
-  // ? send an email
+    // * send an e-mail template
+    emailSender.send(user.email, user.activationCode)
 }
 
 exports.sendActivationCode = sendActivationCode

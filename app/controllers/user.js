@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const generateActivationCode = require('../utils/activationCodeGenerator')
+const emailSender = require('../services/mail-sender')
 const bcrypt = require('bcryptjs')
 const Ajv = require('ajv')
 const addFormats = require('ajv-formats')
@@ -118,7 +119,8 @@ const register = async (req, res, next) => {
     return res.status(500).send('Nieudana rejestracja').end()
   }
 
-  // ? send an email
+  // * send an e-mail template
+  emailSender.send(createdUser.email, createdUser.activationCode)
 
   createdUser.password = undefined
   createdUser.activationCode = undefined

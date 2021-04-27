@@ -24,7 +24,7 @@ const send = (email, code) => {
       console.log(err)
     } else {
       console.log(info)
-      console.log('Message sent!!!')
+      console.log('Message sent')
     }
   })
 }
