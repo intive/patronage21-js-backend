@@ -1,4 +1,5 @@
-<!doctype html>
+const generateEmailTemplate = (activationCode) => {
+  return `<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
   xmlns:o="urn:schemas-microsoft-com:office:office">
 
@@ -154,7 +155,7 @@
                                         <td align="center"
                                           style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                           <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:36px;font-weight:bold;line-height:1;text-align:center;color:#cb4173;">
-                                            12345678
+                                            ${activationCode}
                                           </div>
                                         </td>
                                       </tr>
@@ -194,4 +195,7 @@
   </div>
 </body>
 
-</html>
+</html>`
+}
+
+exports.generateEmailTemplate = generateEmailTemplate

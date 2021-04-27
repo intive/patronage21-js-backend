@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer')
+const { generateEmailTemplate } = require('./email-template')
 
-const send = (email, code) => {
+const send = (email, activationCode) => {
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
@@ -15,8 +16,7 @@ const send = (email, code) => {
     from: process.env.EMAIL_USER,
     to: email,
     subject: 'Kod weryfikacyjny Patron-a-tive.',
-    // html: emailTemplate({ code }),
-    text: `Kod weryfikacyjny: ${code}`
+    html: generateEmailTemplate(activationCode)
   }
 
   transporter.sendMail(mailOptions, (err, info) => {
