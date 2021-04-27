@@ -21,10 +21,9 @@ const send = (email, activationCode) => {
 
   transporter.sendMail(mailOptions, (err, info) => {
     if (err) {
-      console.log(err)
+      return console.log('Podczas próby wysłania e-maila wystąpił błąd', err)
     } else {
-      console.log(info)
-      console.log('Message sent')
+      console.log('Message sent: ', info)
     }
   })
 }

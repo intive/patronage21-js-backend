@@ -1,5 +1,5 @@
 const generateEmailTemplate = (activationCode) => {
-  return `<!doctype html>
+  return /* html */`<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
   xmlns:o="urn:schemas-microsoft-com:office:office">
 
@@ -150,7 +150,7 @@ const generateEmailTemplate = (activationCode) => {
                                             Poniżej znajduje się kod potwierdzający Twój adres e-mail:
                                           </div>
                                         </td>
-                                      </tr>                                  
+                                      </tr>
                                       <tr>
                                         <td align="center"
                                           style="font-size:0px;padding:10px 25px;word-break:break-word;">
@@ -163,7 +163,7 @@ const generateEmailTemplate = (activationCode) => {
                                         <td style="font-size:0px;word-break:break-word;">
                                           <div style="height:30px;line-height:30px;">&#8202;</div>
                                         </td>
-                                      </tr>                                  
+                                      </tr>
                                       <tr>
                                         <td align="center"
                                           style="font-size:0px;padding:10px 25px;word-break:break-word;">

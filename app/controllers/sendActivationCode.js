@@ -5,7 +5,6 @@ const emailSender = require('../services/mail-sender')
 const sendActivationCode = async (req, res) => {
   const id = req.params.id
   const newActivationCode = generateActivationCode()
-  console.log('new code: ', newActivationCode)
 
   const user = await User.findOne({ _id: id }, (error, docs) => {
     if (error) {
@@ -21,11 +20,11 @@ const sendActivationCode = async (req, res) => {
 
     res.status(200).send('Kod aktywacyjny został wysłany pomyśnie')
   } catch (error) {
-    return res.status(500).send('Wysłanie kodu nie powiodło się').end()
+    return res.status(500).send('Wysłanie kodu nie powiodło się', error).end()
   }
 
-    // * send an e-mail template
-    emailSender.send(user.email, user.activationCode)
+  // * send an e-mail template
+  emailSender.send(user.email, user.activationCode)
 }
 
 exports.sendActivationCode = sendActivationCode

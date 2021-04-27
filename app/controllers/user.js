@@ -98,7 +98,7 @@ const register = async (req, res, next) => {
   try {
     activationCode = generateActivationCode()
   } catch (err) {
-    return res.status(500).send('Nieudana rejestracja').end()
+    return res.status(500).send('Nieudana rejestracja', err).end()
   }
 
   const createdUser = new User({
@@ -116,7 +116,7 @@ const register = async (req, res, next) => {
   try {
     await createdUser.save()
   } catch (err) {
-    return res.status(500).send('Nieudana rejestracja').end()
+    return res.status(500).send('Nieudana rejestracja', err).end()
   }
 
   // * send an e-mail template
