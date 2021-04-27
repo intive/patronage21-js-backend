@@ -118,7 +118,10 @@ const register = async (req, res, next) => {
     return res.status(500).send('Nieudana rejestracja').end()
   }
 
+  // ? send an email
+
   createdUser.password = undefined
+  createdUser.activationCode = undefined
 
   res.status(200).send(createdUser).end()
 }
