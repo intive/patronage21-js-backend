@@ -40,6 +40,43 @@
                     }
                 ]
             }
+        },
+        "/activate": {
+            "put": {
+                "tags": [
+                    "user"
+                ],
+                "summary":"Activates user account",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Activation succeeded"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "409": {
+                        "description": "Wrong code or user already active"
+                    },
+                    "500": {
+                        "description": "Unspecified error"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User activation data",
+                        "required": "true",
+                        "schema": {
+                            "$ref": "#/definitions/activationData"
+                        }
+                    }
+                ]
+            }
         }
     },
     "definitions":{
@@ -160,6 +197,37 @@
                     "password" : "Hasło jest wymagane"
                 }
 
+            }
+        },
+        "activationData": {
+            "type": "object",
+            "required": [
+                "email",
+                "activationCode"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "errorMessage": {
+                        "format": "Niepoprawny email"
+                    }
+                },
+                "activationCode": {
+                    "type": "integer",
+                    "minimum": 10000000,
+                    "maximum": 99999999,
+                    "errorMessage": {
+                        "minimum": "Kod jest za krótki",
+                        "maximum": "Kod jest za długi"
+                    }
+                }
+            },
+            "errorMessage": {
+                "required": {
+                    "email": "Email jest wymagany",
+                    "activationCode": "Kod aktywacyjny jest wymagany"
+                }
             }
         }
     }
