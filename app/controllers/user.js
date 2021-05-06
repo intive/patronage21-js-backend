@@ -155,7 +155,7 @@ const activateUser = async (req, res) => {
       })
       return res.status(400).send(errors).end()
     } catch (err) {
-      return res.status(500).send('Nieudana rejestracja').end()
+      return res.status(500).json('Nieudana rejestracja')
     }
   }
 
@@ -167,30 +167,30 @@ const activateUser = async (req, res) => {
   try {
     await User.where({ email: email }).findOne((error, existingUser) => {
       if (error) {
-        return res.status(500).send('Nieudana aktywacja').end()
+        return res.status(500).json('Nieudana aktywacja')
       }
       if (!existingUser) {
-        return res.status(404).send('Uzytkownik nie istnieje')
+        return res.status(404).json('Użytkownik nie istnieje')
       }
       if (existingUser) {
         if (existingUser.active === true) {
-          return res.status(409).send('Uzytkownik jest juz aktywny').end()
+          return res.status(409).json('Użytkownik jest już aktywny')
         } else if (existingUser.activationCode !== activationCode) {
-          return res.status(409).send('Bledny kod').end()
+          return res.status(409).json('Błędny kod')
         } else if (existingUser.activationCode === activationCode) {
           try {
             User.where({ email: email }).update({ $set: { active: true } }, () => {
               // sendEmail()
-              res.status(200).send('Aktywacja udana').end()
+              res.status(200).json('Aktywacja udana')
             })
           } catch (err) {
-            return res.status(500).send('Nieudana aktywacja').end()
+            return res.status(500).json('Nieudana aktywacja')
           }
         }
       }
     })
   } catch (err) {
-    return res.status(500).send('Nieudana aktywacja').end()
+    return res.status(500).json('Nieudana aktywacja')
   }
 }
 
