@@ -124,11 +124,10 @@ const register = async (req, res, next) => {
 
   createdUser.password = undefined
   createdUser.activationCode = undefined
+  createdUser.__v = undefined
 
   res.status(200).send(createdUser).end()
 }
-
-exports.register = register
 
 const activateUser = async (req, res) => {
   const errors = {
@@ -195,4 +194,28 @@ const activateUser = async (req, res) => {
   }
 }
 
+const listOfUsers = async (req, res) => {
+  try {
+    const active = req.query.active
+    let users
+    if (active === 'true') {
+      users = await User.find({ active: true })
+    } else {
+      users = await User.find({})
+    }
+
+    users.forEach(user => {
+      user.password = undefined
+      user.__v = undefined
+      user.activationCode = undefined
+    })
+
+    return res.status(200).send(users).end()
+  } catch (err) {
+    return res.status(500).send('Nieudana rejestracja').end()
+  }
+}
+
+exports.listOfUsers = listOfUsers
+exports.register = register
 exports.activateUser = activateUser
