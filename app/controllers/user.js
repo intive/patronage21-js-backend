@@ -212,7 +212,7 @@ const listOfUsers = async (req, res) => {
 
     return res.status(200).send(users).end()
   } catch (err) {
-    return res.status(500).send('Nieudana rejestracja').end()
+    return res.status(500).send('Nie udało się pobrać listy użytkowników').end()
   }
 }
 
