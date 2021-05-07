@@ -6,25 +6,21 @@ const sendActivationCode = async (req, res) => {
   const id = req.params.id
   const newActivationCode = generateActivationCode()
 
-  const user = await User.findOne({ _id: id }, (error, docs) => {
-    if (error) {
-      res.status(404).send('Użytkownik o podanym id nie istnieje')
-    } else {
-      return docs
-    }
-  })
-
   try {
+    const user = await User.findOne({ _id: id })
+    if (!user) {
+      return res.status(404).json('Użytkownik o podanym id nie istnieje')
+    }
+    if (user.active) {
+      return res.status(409).json('Użytkownik jest już aktywny')
+    }
     user.activationCode = newActivationCode
+    emailSender.send(user.email, user.activationCode)
     await user.save()
-
-    res.status(200).send('Kod aktywacyjny został wysłany pomyśnie')
-  } catch (error) {
-    return res.status(500).send('Wysłanie kodu nie powiodło się', error).end()
+    return res.status(200).json('Kod aktywacyjny został wysłany pomyśnie')
+  } catch (err) {
+    return res.status(500).json('Wysłanie kodu nie powiodło się')
   }
-
-  // * send an e-mail template
-  emailSender.send(user.email, user.activationCode)
 }
 
 exports.sendActivationCode = sendActivationCode
