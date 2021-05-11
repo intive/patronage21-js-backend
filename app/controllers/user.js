@@ -155,7 +155,8 @@ const activateUser = async (req, res) => {
       })
       return res.status(400).send(errors).end()
     } catch (err) {
-      return res.status(500).json('Nieudana rejestracja')
+      errors.general.push('Nieudana rejestracja')
+      return res.status(500).send(errors).end()
     }
   }
 
@@ -167,30 +168,37 @@ const activateUser = async (req, res) => {
   try {
     await User.where({ email: email }).findOne((error, existingUser) => {
       if (error) {
-        return res.status(500).json('Nieudana aktywacja')
+        errors.general.push('Nieudana aktywacja')
+        return res.status(500).send(errors).end()
       }
       if (!existingUser) {
-        return res.status(404).json('Użytkownik nie istnieje')
+        errors.general.push('Użytkownik nie istnieje')
+        return res.status(404).send(errors).end()
       }
       if (existingUser) {
         if (existingUser.active === true) {
-          return res.status(409).json('Użytkownik jest już aktywny')
+          errors.general.push('Użytkownik jest już aktywny')
+          return res.status(409).send(errors)
         } else if (existingUser.activationCode !== activationCode) {
-          return res.status(409).json('Błędny kod')
+          errors.general.push('Błędny kod')
+          return res.status(409).send(errors).end()
         } else if (existingUser.activationCode === activationCode) {
           try {
             User.where({ email: email }).update({ $set: { active: true } }, () => {
               // sendEmail()
-              res.status(200).json('Aktywacja udana')
+              errors.general.push('Aktywacja udana')
+              res.status(200).send(errors).end()
             })
           } catch (err) {
-            return res.status(500).json('Nieudana aktywacja')
+            errors.general.push('Nieudana aktywacja')
+            return res.status(500).send(errors).end()
           }
         }
       }
     })
   } catch (err) {
-    return res.status(500).json('Nieudana aktywacja')
+    errors.general.push('Nieudana aktywacja')
+    return res.status(500).send(errors).end()
   }
 }
 
