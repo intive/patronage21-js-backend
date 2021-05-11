@@ -178,7 +178,7 @@ const activateUser = async (req, res) => {
       if (existingUser) {
         if (existingUser.active === true) {
           errors.general.push('Użytkownik jest już aktywny')
-          return res.status(409).send(errors)
+          return res.status(409).send(errors).end()
         } else if (existingUser.activationCode !== activationCode) {
           errors.general.push('Błędny kod')
           return res.status(409).send(errors).end()
