@@ -123,20 +123,24 @@
             "properties":{
                 "firstName": {
                     "type": "string",
-                    "maxLength": 20,
-                    "minLength": 3,
+                    "maxLength": 30,
+                    "minLength": 2,
+                    "pattern": "^[a-zA-Z]+$",
                     "errorMessage": {
                         "maxLength": "Imię jest za długie",
-                        "minLength": "Imię musi mieć co najmniej 3 znaki"
+                        "minLength": "Imię musi mieć co najmniej 2 znaki",
+                        "pattern": "Imię może zawierać jedynie litery"
                     }
                 },
                 "lastName": {
                     "type": "string",
-                    "maxLength": 20,
+                    "maxLength": 30,
                     "minLength": 2,
+                    "pattern": "^[a-zA-Z]+$",
                     "errorMessage": {
                         "maxLength": "Nazwisko jest za długie",
-                        "minLength": "Nazwisko musi mieć co najmniej 2 znaki"
+                        "minLength": "Nazwisko musi mieć co najmniej 2 znaki",
+                        "pattern": "Nazwisko może zawierać jedynie litery"
                     }
                 },
                 "email": {
@@ -150,9 +154,11 @@
                     "type": "string",
                     "maxLength": 15,
                     "minLength": 2,
+                    "pattern": "^[a-zA-Z0-9]+$",
                     "errorMessage": {
-                        "maxLength": "Login musi mieć mniej niż 15 znaków",
-                        "minLength": "Login musi mieć co najmniej 2 znaki"
+                        "maxLength": "Login może składać się z maksymalnie 15 znaków",
+                        "minLength": "Login musi składać się z co najmniej 2 znaków",
+                        "pattern": "Login może zawierać jedynie litery i cyfry"
                     }
                 },
                 "phone":{
@@ -188,11 +194,13 @@
                 },
                 "password": {
                     "type": "string",
+                    "maxLength": 20,
                     "minLength": 8,
-                    "pattern": "^(?=.*[!@#$%^&*()-+])(?=.*[A-Z])",
+                    "pattern": "^(?=.*[!@#$%^&*()-+])(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])",
                     "errorMessage": {
+                        "maxLength": "Hasło może składać się z maksymalnie 20 znaków",
                         "minLength": "Hasło musi składać się z co najmniej ośmiu znaków",
-                        "pattern": "Hasło musi mieć przynajmniej jedną dużą literę i jeden znak specjalny"
+                        "pattern": "Hasło musi zawierać przynajmniej jedną dużą literę, jedną małą literę, jedną cyfrę i jeden znak specjalny"
                     }
                 },
                 "activationCode": {
@@ -206,7 +214,7 @@
                 },
                 "githubLink": {
                     "type": "string",
-                    "pattern": "((https?):\/\/)?(www.)?github.com\/[0-9a-zA-Z.-]+$",
+                    "pattern": "^((https?):\/\/)?(www.)?github.com\/[a-zA-Z0-9](?:[a-zA-Z0-9]|-(?=[a-zA-Z0-9])){0,38}$",
                     "errorMessage": {
                         "pattern": "Niepoprawny link"
                     }
@@ -214,7 +222,6 @@
             },
             "errorMessage": {
                 "required": {
-                    "title": "Proszę wybrać tytuł",
                     "firstName": "Imie jest wymagane",
                     "lastName": "Nazwisko jest wymagane",
                     "email": "Email jest wymagany",
