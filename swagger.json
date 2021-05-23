@@ -77,6 +77,34 @@
                     }
                 ]
             }
+        },
+        "/list?active=true": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary":"Shows list of users",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "getting list succeeded"
+                    },
+                    "500": {
+                        "description": "Unspecified error"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "active",
+                        "description": "Show only active users",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ]
+
+            }
         }
     },
     "definitions":{

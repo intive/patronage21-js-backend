@@ -19,7 +19,7 @@ const connectDb = require('./config/connection')
 const app = express()
 
 app.use(cors({
-  origin: 'http://localhost:3000'
+  origin: process.env.IS_PRODUCTION ? 'https://patronage21.herokuapp.com' : 'http://localhost:3000'
 }))
 app.use(express.json())
 app.use(helmet())
