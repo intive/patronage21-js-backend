@@ -62,4 +62,3 @@ const addEvent = async (req, res, next) => {
 }
 
 exports.addEvent = addEvent
-
