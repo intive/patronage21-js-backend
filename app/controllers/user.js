@@ -47,7 +47,8 @@ const register = async (req, res, next) => {
         }
       })
     } catch (err) {
-      return res.status(500).send('Nieudana rejestracja').end()
+      errors.general.push('Nieudana rejestracja')
+      return res.status(500).send(errors).end()
     }
   }
 
@@ -57,7 +58,8 @@ const register = async (req, res, next) => {
       email: email
     })
   } catch (err) {
-    return res.status(500).send('Nieudana rejestracja').end()
+    errors.general.push('Nieudana rejestracja')
+    return res.status(500).send(errors).end()
   }
 
   let existingLogin
@@ -66,7 +68,8 @@ const register = async (req, res, next) => {
       login: login
     })
   } catch (err) {
-    return res.status(500).send('Nieudana rejestracja').end()
+    errors.general.push('Nieudana rejestracja')
+    return res.status(500).send(errors).end()
   }
 
   if (existingEmail) {
@@ -91,14 +94,16 @@ const register = async (req, res, next) => {
   try {
     password = await bcrypt.hash(notHashedPassport, 12)
   } catch (err) {
-    return res.status(500).send('Nieudana rejestracja').end()
+    errors.general.push('Nieudana rejestracja')
+    return res.status(500).send(errors).end()
   }
 
   let activationCode
   try {
     activationCode = generateActivationCode()
   } catch (err) {
-    return res.status(500).send('Nieudana rejestracja', err).end()
+    errors.general.push('Nieudana rejestracja')
+    return res.status(500).send(errors).end()
   }
 
   const createdUser = new User({
@@ -116,7 +121,8 @@ const register = async (req, res, next) => {
   try {
     await createdUser.save()
   } catch (err) {
-    return res.status(500).send('Nieudana rejestracja', err).end()
+    errors.general.push('Nieudana rejestracja')
+    return res.status(500).send(errors).end()
   }
 
   // * send an e-mail template
@@ -203,6 +209,11 @@ const activateUser = async (req, res) => {
 }
 
 const listOfUsers = async (req, res) => {
+  const errors = {
+    fields: {},
+    general: []
+  }
+
   try {
     const active = req.query.active
     let users
@@ -220,7 +231,8 @@ const listOfUsers = async (req, res) => {
 
     return res.status(200).send(users).end()
   } catch (err) {
-    return res.status(500).send('Nie udało się pobrać listy użytkowników').end()
+    errors.general.push('Nie udało się pobrać listy użytkowników')
+    return res.status(500).send(errors).end()
   }
 }
 
