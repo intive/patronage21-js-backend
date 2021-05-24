@@ -41,6 +41,34 @@
                 ]
             }
         },
+        "/events": {
+            "post": {
+                "tags": [
+                    "events"
+                ],
+                "summary": "Creates entry for event in database",
+                "consumes": "application/json",
+                "responses":{
+                    "200":{
+                        "description": "Success"
+                    },
+                    "500":{
+                        "description": "Error"
+                    }
+                },
+                "parameters":[
+                    {
+                        "in":"body",
+                        "name":"body",
+                        "description":"Event object",
+                        "required": "true",
+                        "schema":{
+                            "$ref": "#/definitions/Event"
+                        }
+                    }
+                ]
+            }
+        },
         "/activate": {
             "put": {
                 "tags": [
@@ -255,6 +283,46 @@
                 "required": {
                     "email": "Email jest wymagany",
                     "activationCode": "Kod aktywacyjny jest wymagany"
+                }
+            }
+        },
+        "Event": {
+            "type": "object",
+            "required": [
+                "title",
+                "startDate",
+                "endDate"
+            ],
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 3,
+                    "errorMessage": {
+                        "minLength": "Tytuł musi mieć minimalnie 3 znaki",
+                        "maxLength": "Tytuł może mieć maksymalnie 50 znaków"
+                    }
+                },
+                "startDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "errorMessage": {
+                        "format": "Nieprawidłowy format daty"
+                    }       
+                },
+                "endDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "errorMessage": {
+                        "format": "Nieprawidłowy format daty"
+                    } 
+                }
+            },
+            "errorMessage": {
+                "required": {
+                    "title": "Tytuł jest wymagany",
+                    "startDate": "Data rozpoczęcia jest wymagana",
+                    "endDate": "Data zakończenia jest wymagana"
                 }
             }
         }

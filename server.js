@@ -13,6 +13,7 @@ ajv.addVocabulary(['swagger', 'info', 'basePath', 'tags', 'paths'])
 const usersSampleRoutes = require('./app/routes/users-sample')
 const usersRoutes = require('./app/routes/user')
 const sendActivationCodeRoutes = require('./app/routes/sendActivationCode')
+const eventsRoutes = require('./app/routes/events')
 dotenv.config()
 const connectDb = require('./config/connection')
 
@@ -34,6 +35,7 @@ const PORT = process.env.PORT || 8080
 app.use('/api/users-sample', usersSampleRoutes)
 app.use('/api', usersRoutes)
 app.use('/api/sendActivationCode', sendActivationCodeRoutes)
+app.use('/api/events', eventsRoutes)
 
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./swagger.json')
