@@ -27,7 +27,7 @@ const sendActivationCode = async (req, res) => {
 
     await user.save()
 
-    errors.general.push('Kod aktywacyjny został wysłany pomyśnie')
+    errors.general.push('Kod aktywacyjny został wysłany pomyślnie')
     return res.status(200).send(errors).end()
   } catch (err) {
     errors.general.push('Wysłanie kodu nie powiodło się')
