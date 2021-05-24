@@ -61,4 +61,27 @@ const addEvent = async (req, res, next) => {
   res.status(200).send(createdEvent)
 }
 
+const deleteEvent = async (req, res) => {
+  const errors = {
+    fields: {},
+    general: []
+  }
+
+  const id = req.params.id
+
+  try {
+    const event = await Event.findByIdAndRemove({ _id: id })
+    if (!event) {
+      errors.general.push('Usuwanie wydarzenia nie powiodło się')
+      return res.status(404).send(errors)
+    }
+    errors.general.push('Wydarzenie zostało usunięte z kalendarza')
+    return res.status(200).send(errors)
+  } catch (err) {
+    errors.general.push('Usuwanie wydarzenia nie powiodło się')
+    return res.status(500).send(errors)
+  }
+}
+
 exports.addEvent = addEvent
+exports.deleteEvent = deleteEvent
