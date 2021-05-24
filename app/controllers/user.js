@@ -47,7 +47,8 @@ const register = async (req, res, next) => {
         }
       })
     } catch (err) {
-      return res.status(500).send('Nieudana rejestracja').end()
+      errors.general.push('Nieudana rejestracja')
+      return res.status(500).send(errors).end()
     }
   }
 
@@ -57,7 +58,8 @@ const register = async (req, res, next) => {
       email: email
     })
   } catch (err) {
-    return res.status(500).send('Nieudana rejestracja').end()
+    errors.general.push('Nieudana rejestracja')
+    return res.status(500).send(errors).end()
   }
 
   let existingLogin
@@ -66,7 +68,8 @@ const register = async (req, res, next) => {
       login: login
     })
   } catch (err) {
-    return res.status(500).send('Nieudana rejestracja').end()
+    errors.general.push('Nieudana rejestracja')
+    return res.status(500).send(errors).end()
   }
 
   if (existingEmail) {
@@ -91,14 +94,16 @@ const register = async (req, res, next) => {
   try {
     password = await bcrypt.hash(notHashedPassport, 12)
   } catch (err) {
-    return res.status(500).send('Nieudana rejestracja').end()
+    errors.general.push('Nieudana rejestracja')
+    return res.status(500).send(errors).end()
   }
 
   let activationCode
   try {
     activationCode = generateActivationCode()
   } catch (err) {
-    return res.status(500).send('Nieudana rejestracja', err).end()
+    errors.general.push('Nieudana rejestracja')
+    return res.status(500).send(errors).end()
   }
 
   const createdUser = new User({
@@ -116,7 +121,8 @@ const register = async (req, res, next) => {
   try {
     await createdUser.save()
   } catch (err) {
-    return res.status(500).send('Nieudana rejestracja', err).end()
+    errors.general.push('Nieudana rejestracja')
+    return res.status(500).send(errors).end()
   }
 
   // * send an e-mail template
@@ -155,7 +161,8 @@ const activateUser = async (req, res) => {
       })
       return res.status(400).send(errors).end()
     } catch (err) {
-      return res.status(500).json('Nieudana rejestracja')
+      errors.general.push('Nieudana rejestracja')
+      return res.status(500).send(errors).end()
     }
   }
 
@@ -167,34 +174,46 @@ const activateUser = async (req, res) => {
   try {
     await User.where({ email: email }).findOne((error, existingUser) => {
       if (error) {
-        return res.status(500).json('Nieudana aktywacja')
+        errors.general.push('Nieudana aktywacja')
+        return res.status(500).send(errors).end()
       }
       if (!existingUser) {
-        return res.status(404).json('Użytkownik nie istnieje')
+        errors.general.push('Użytkownik nie istnieje')
+        return res.status(404).send(errors).end()
       }
       if (existingUser) {
         if (existingUser.active === true) {
-          return res.status(409).json('Użytkownik jest już aktywny')
+          errors.general.push('Użytkownik jest już aktywny')
+          return res.status(409).send(errors).end()
         } else if (existingUser.activationCode !== activationCode) {
-          return res.status(409).json('Błędny kod')
+          errors.general.push('Błędny kod')
+          return res.status(409).send(errors).end()
         } else if (existingUser.activationCode === activationCode) {
           try {
             User.where({ email: email }).update({ $set: { active: true } }, () => {
               // sendEmail()
-              res.status(200).json('Aktywacja udana')
+              errors.general.push('Aktywacja udana')
+              res.status(200).send(errors).end()
             })
           } catch (err) {
-            return res.status(500).json('Nieudana aktywacja')
+            errors.general.push('Nieudana aktywacja')
+            return res.status(500).send(errors).end()
           }
         }
       }
     })
   } catch (err) {
-    return res.status(500).json('Nieudana aktywacja')
+    errors.general.push('Nieudana aktywacja')
+    return res.status(500).send(errors).end()
   }
 }
 
 const listOfUsers = async (req, res) => {
+  const errors = {
+    fields: {},
+    general: []
+  }
+
   try {
     const active = req.query.active
     let users
@@ -212,7 +231,8 @@ const listOfUsers = async (req, res) => {
 
     return res.status(200).send(users).end()
   } catch (err) {
-    return res.status(500).send('Nie udało się pobrać listy użytkowników').end()
+    errors.general.push('Nie udało się pobrać listy użytkowników')
+    return res.status(500).send(errors).end()
   }
 }
 
