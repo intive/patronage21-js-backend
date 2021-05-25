@@ -228,7 +228,7 @@
                 },
                 "activationCode": {
                     "type": "string",
-                    "pattern": "\b[0-9]{8}$\b",
+                    "pattern": "^[0-9]{8}$",
                     "errorMessage": {
                         "pattern": "Niepoprawny kod aktywacyjny"
                     }
@@ -275,7 +275,7 @@
                 },
                 "activationCode": {
                     "type": "string",
-                    "pattern": "\b[0-9]{8}$\b",
+                    "pattern": "^[0-9]{8}$",
                     "errorMessage": {
                         "pattern": "Niepoprawny kod aktywacyjny"
                     }
