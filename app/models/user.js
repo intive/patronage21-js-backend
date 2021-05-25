@@ -18,7 +18,7 @@ const userSchema = new Schema({
   login: { type: String, required: true, unique: true },
   githubLink: { type: String, required: true },
   password: { type: String, required: true },
-  activationCode: { type: Number, min: 10000000, max: 99999999, required: true },
+  activationCode: { type: String, validate: /\b[0-9]{8}$\b/, required: true },
   active: { type: Boolean, default: false }
 })
 

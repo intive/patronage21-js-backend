@@ -1,6 +1,6 @@
 {
     "swagger": "2.0",
-    "info":{
+    "info": {
         "description": "Patronative registration API",
         "version": "1.0.0",
         "title": "Patronative"
@@ -20,21 +20,21 @@
                 ],
                 "summary": "Creates entry for user in database",
                 "consumes": "application/json",
-                "responses":{
-                    "200":{
+                "responses": {
+                    "200": {
                         "description": "Success"
                     },
-                    "500":{
+                    "500": {
                         "description": "Error"
                     }
                 },
-                "parameters":[
+                "parameters": [
                     {
-                        "in":"body",
-                        "name":"body",
-                        "description":"User object",
+                        "in": "body",
+                        "name": "body",
+                        "description": "User object",
                         "required": "true",
-                        "schema":{
+                        "schema": {
                             "$ref": "#/definitions/User"
                         }
                     }
@@ -74,7 +74,7 @@
                 "tags": [
                     "user"
                 ],
-                "summary":"Activates user account",
+                "summary": "Activates user account",
                 "consumes": "application/json",
                 "responses": {
                     "200": {
@@ -111,7 +111,7 @@
                 "tags": [
                     "user"
                 ],
-                "summary":"Shows list of users",
+                "summary": "Shows list of users",
                 "consumes": "application/json",
                 "responses": {
                     "200": {
@@ -131,11 +131,42 @@
                         }
                     }
                 ]
-
+            }
+        },
+        "/sendActivationCode/{_id}": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Creates new activation code for user of given id",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Activation code sent successfully"
+                    },
+                    "404": {
+                        "description": "User with given id does not exist"
+                    },
+                    "409": {
+                        "description": "User is already activated"
+                    },
+                    "500": {
+                        "description": "Sending activation code has been failed"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "_id",
+                        "description": "The user object's ID (Automatically assigned by MongoDB)",
+                        "required": "true",
+                        "type": "string"
+                    }
+                ]
             }
         }
     },
-    "definitions":{
+    "definitions": {
         "User": {
             "type": "object",
             "required": [
@@ -148,7 +179,7 @@
                 "githubLink",
                 "password"
             ],
-            "properties":{
+            "properties": {
                 "firstName": {
                     "type": "string",
                     "maxLength": 20,
@@ -183,7 +214,7 @@
                         "minLength": "Login musi mieć co najmniej 2 znaki"
                     }
                 },
-                "phone":{
+                "phone": {
                     "type": "integer",
                     "minimum": 100000000,
                     "maximum": 999999999,
@@ -224,9 +255,11 @@
                     }
                 },
                 "activationCode": {
-                    "type": "integer",
-                    "minimum": 10000000,
-                    "maximum": 99999999
+                    "type": "string",
+                    "pattern": "^[0-9]{8}$",
+                    "errorMessage": {
+                        "pattern": "Niepoprawny kod aktywacyjny"
+                    }
                 },
                 "active": {
                     "type": "boolean",
@@ -250,9 +283,8 @@
                     "technologies": "Proszę wybrać conajmniej jedną technologię",
                     "login": "Login jest wymagany",
                     "githubLink": "Link do github jest wymagany",
-                    "password" : "Hasło jest wymagane"
+                    "password": "Hasło jest wymagane"
                 }
-
             }
         },
         "activationData": {
@@ -270,12 +302,10 @@
                     }
                 },
                 "activationCode": {
-                    "type": "integer",
-                    "minimum": 10000000,
-                    "maximum": 99999999,
+                    "type": "string",
+                    "pattern": "^[0-9]{8}$",
                     "errorMessage": {
-                        "minimum": "Kod jest za krótki",
-                        "maximum": "Kod jest za długi"
+                        "pattern": "Niepoprawny kod aktywacyjny"
                     }
                 }
             },
