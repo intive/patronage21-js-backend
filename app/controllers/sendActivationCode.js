@@ -17,7 +17,7 @@ const sendActivationCode = async (req, res) => {
     user.activationCode = newActivationCode
     emailSender.send(user.email, user.activationCode)
     await user.save()
-    return res.status(200).json('Kod aktywacyjny został wysłany pomyśnie')
+    return res.status(200).json('Kod aktywacyjny został wysłany pomyślnie')
   } catch (err) {
     return res.status(500).json('Wysłanie kodu nie powiodło się')
   }
