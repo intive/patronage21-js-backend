@@ -235,6 +235,83 @@
                     }
                 ]
             }
+        },
+        "/events/list/{fromDate}": {
+            "get": {
+                "tags": [
+                    "event"
+                ],
+                "summary": "Show list of events for the day (24 hours)",
+                "consumes": "application/json",
+                "responses":{
+                    "200":{
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500":{
+                        "description": "Error"
+                    }
+                },
+                "parameters":[
+                    {
+                        "in": "path",
+                        "name": "fromDate",
+                        "description": "Date and time start of search",
+                        "required": "true",
+                        "schema":{
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2021-05-25T00:00:00"
+                        }    
+                    }
+                ]
+            }
+        },
+        "/events/list/{fromDate}/{toDate}": {
+            "get": {
+                "tags": [
+                    "event"
+                ],
+                "summary": "Show list of events for a given period of time",
+                "consumes": "application/json",
+                "responses":{
+                    "200":{
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500":{
+                        "description": "Error"
+                    }
+                },
+                "parameters":[
+                    {
+                        "in": "path",
+                        "name": "fromDate",
+                        "description": "Date and time start of search",
+                        "required": "true",
+                        "schema":{
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2021-05-25T00:00:00"
+                        }  
+                    },
+                    {
+                        "in": "path",
+                        "name": "toDate",
+                        "description": "Date and time end of search",
+                        "required": "true",
+                        "schema":{
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2021-05-26T23:59:59"
+                        }    
+                    }
+                ]
+            }
         }
     },
     "definitions": {

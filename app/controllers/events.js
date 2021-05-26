@@ -165,6 +165,42 @@ const patchEvent = async (req, res) => {
   res.status(200).send('Wydarzenie zostało zedytowane')
 }
 
+const listOfEvents = async (req, res) => {
+  const errors = {
+    fields: {},
+    general: []
+  }
+
+  const fromDate = req.params.fromDate
+  const toDate = req.params.toDate
+
+  if (new Date(fromDate).getTime() > new Date(toDate).getTime()) {
+    errors.general.push('Błędny zakres dat w zapytaniu')
+    return res.status(400).send(errors)
+  }
+
+  try {
+    const startOfSearch = fromDate
+    let endOfSearch
+
+    if (fromDate && toDate) endOfSearch = toDate
+    else endOfSearch = new Date(new Date(fromDate).getTime() + 24 * 60 * 60 * 1000)
+
+    const events = await Event.find({
+      startDate: {
+        $gte: startOfSearch,
+        $lt: endOfSearch
+      }
+    }).sort({ startDate: 1 })
+
+    return res.status(200).send(events)
+  } catch (err) {
+    errors.general.push('Nie udało się pobrać listy wydarzeń')
+    return res.status(500).send(errors)
+  }
+}
+
 exports.addEvent = addEvent
 exports.deleteEvent = deleteEvent
 exports.patchEvent = patchEvent
+exports.listOfEvents = listOfEvents
