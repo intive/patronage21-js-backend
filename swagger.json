@@ -10,6 +10,10 @@
         {
             "name": "user",
             "description": "Endpoints related to user registration"
+        },
+        {
+            "name": "event",
+            "description": "Endpoints related to events"
         }
     ],
     "paths": {
@@ -44,7 +48,7 @@
         "/events": {
             "post": {
                 "tags": [
-                    "events"
+                    "event"
                 ],
                 "summary": "Creates entry for event in database",
                 "consumes": "application/json",
@@ -161,6 +165,37 @@
                         "description": "The user object's ID (Automatically assigned by MongoDB)",
                         "required": "true",
                         "type": "string"
+                    }
+                ]
+            }
+        },
+        "/events/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "event"
+                ],
+                "summary": "Delete the event from the database",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "Event id to delete",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ]
             }
@@ -338,6 +373,13 @@
                     "errorMessage": {
                         "minLength": "Tytuł musi mieć minimalnie 3 znaki",
                         "maxLength": "Tytuł może mieć maksymalnie 50 znaków"
+                    }
+                },
+                "description": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "errorMessage": {
+                        "maxLength": "Opis wydarzenia może mieć maksymalnie 200 znaków"
                     }
                 },
                 "startDate": {
