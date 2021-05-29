@@ -42,20 +42,17 @@ const addEvent = async (req, res, next) => {
     }
   }
 
-    if(new Date(endDate).getTime() <= new Date(startDate).getTime()){
-    if(errors.fields.endDate) {
-      errors.fields.endDate.push('Data zakończenia musi być po dacie rozpoczęcia');
+  if (new Date(endDate).getTime() <= new Date(startDate).getTime()) {
+    if (errors.fields.endDate) {
+      errors.fields.endDate.push('Data zakończenia musi być po dacie rozpoczęcia')
     } else {
-        errors.fields.endDate = ['Data zakończenia musi być po dacie rozpoczęcia'];
+      errors.fields.endDate = ['Data zakończenia musi być po dacie rozpoczęcia']
     }
-
   }
 
   if (Object.keys(errors.fields).length !== 0 || errors.general.length > 0) {
     return res.status(400).send(errors)
   }
-
-
 
   const createdEvent = new Event({
     title: title,
