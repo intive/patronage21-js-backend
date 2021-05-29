@@ -83,5 +83,76 @@ const deleteEvent = async (req, res) => {
   }
 }
 
+const patchEvent = async (req, res) => {
+  const id = req.params.id
+  let event
+  const errors = {
+    fields: {},
+    general: []
+  }
+
+  const {
+    title,
+    startDate,
+    endDate
+  } = req.body
+
+  try {
+    event = await Event.findOne({ _id: id })
+    if (!event) {
+      errors.general.push('Wydarzenie o takim id nie istnieje')
+    }
+  } catch (err) {
+    errors.general.push('Usuwanie wydarzenia nie powiodło się')
+  }
+
+  const validateEvent = ajv.compile({ $ref: 'swagger.json#/definitions/Event' })
+  const valid = validateEvent(req.body)
+  if (!valid) {
+    try {
+      validateEvent.errors.forEach(element => {
+        if (element.instancePath === '') {
+          const field = element.params.errors[0].params.missingProperty
+          errors.fields[field] = [element.message]
+        } else {
+          const field = element.instancePath.split('/')[1]
+          if (!errors.fields[field]) {
+            errors.fields[field] = [element.message]
+          } else {
+            errors.fields[field].push(element.message)
+          }
+        }
+      })
+    } catch (err) {
+      return res.status(500).send('Edycja eventu nie powiodła się')
+    }
+  }
+
+  if (new Date(endDate).getTime() <= new Date(startDate).getTime()) {
+    if (errors.fields.endDate) {
+      errors.fields.endDate.push('Data zakończenia musi być po dacie rozpoczęcia')
+    } else {
+      errors.fields.endDate = ['Data zakończenia musi być po dacie rozpoczęcia']
+    }
+  }
+
+  if (Object.keys(errors.fields).length !== 0 || errors.general.length > 0) {
+    return res.status(400).send(errors)
+  }
+
+  try {
+    await event.update({
+      title,
+      startDate,
+      endDate
+    })
+  } catch (err) {
+    return res.status(500).send('Edycja eventu nie powiodła się')
+  }
+
+  res.status(200).send('Wydarzenie zostało zedytowane')
+}
+
 exports.addEvent = addEvent
 exports.deleteEvent = deleteEvent
+exports.patchEvent = patchEvent
