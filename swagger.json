@@ -73,6 +73,42 @@
                 ]
             }
         },
+        "/events/{id}": {
+            "patch": {
+                "tags": [
+                    "event"
+                ],
+                "summary": "Edit event",
+                "consumes": "application/json",
+                "responses":{
+                    "200":{
+                        "description": "Success"
+                    },
+                    "500":{
+                        "description": "Error"
+                    }
+                },
+                "parameters":[
+                    {
+                        "in":"body",
+                        "name":"body",
+                        "description":"Event object",
+                        "required": "true",
+                        "schema":{
+                            "$ref": "#/definitions/Event"
+                        }
+                    }, {
+                        "in": "path",
+                        "name": "id",
+                        "description": "Event id to delete",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
         "/activate": {
             "put": {
                 "tags": [
