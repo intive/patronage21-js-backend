@@ -255,7 +255,7 @@
                     "type": "string",
                     "maxLength": 30,
                     "minLength": 2,
-                    "pattern": "^[a-zA-Z]+$",
+                    "pattern": "^[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]+$",
                     "errorMessage": {
                         "maxLength": "Imię jest za długie",
                         "minLength": "Imię musi mieć co najmniej 2 znaki",
@@ -266,7 +266,7 @@
                     "type": "string",
                     "maxLength": 30,
                     "minLength": 2,
-                    "pattern": "^[a-zA-Z]+$",
+                    "pattern": "^[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ\\s-]+$",
                     "errorMessage": {
                         "maxLength": "Nazwisko jest za długie",
                         "minLength": "Nazwisko musi mieć co najmniej 2 znaki",
