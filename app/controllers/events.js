@@ -17,7 +17,8 @@ const addEvent = async (req, res, next) => {
   const {
     title,
     startDate,
-    endDate
+    endDate,
+    description
   } = req.body
 
   const validateEvent = ajv.compile({ $ref: 'swagger.json#/definitions/Event' })
@@ -57,7 +58,8 @@ const addEvent = async (req, res, next) => {
   const createdEvent = new Event({
     title: title,
     startDate,
-    endDate
+    endDate,
+    description
   })
 
   try {
@@ -102,7 +104,8 @@ const patchEvent = async (req, res) => {
   const {
     title,
     startDate,
-    endDate
+    endDate,
+    description
   } = req.body
 
   try {
@@ -152,7 +155,8 @@ const patchEvent = async (req, res) => {
     await event.update({
       title,
       startDate,
-      endDate
+      endDate,
+      description
     })
   } catch (err) {
     return res.status(500).send('Edycja eventu nie powiodła się')
