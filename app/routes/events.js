@@ -8,5 +8,6 @@ router.post('/', eventsController.addEvent)
 router.patch('/:id', eventsController.patchEvent)
 router.delete('/delete/:id', eventsController.deleteEvent)
 router.get('/list/:fromDate/:toDate?', eventsController.listOfEvents)
+router.get('/event/:id', eventsController.findEvent)
 
 module.exports = router
