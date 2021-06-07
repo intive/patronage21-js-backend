@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const Ajv = require('ajv')
 const addFormats = require('ajv-formats')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 
 const ajv = new Ajv({ allErrors: true })
 addFormats(ajv)
@@ -29,6 +30,8 @@ if (app.get('env') === 'development') {
   app.use(morgan('dev'))
   console.log('Morgan enabled...')
 }
+
+app.use(cookieParser())
 
 const PORT = process.env.PORT || 8080
 
