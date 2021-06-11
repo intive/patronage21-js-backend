@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs')
 const Ajv = require('ajv')
 const addFormats = require('ajv-formats')
 const javaIntegration = require('../utils/javaIntegration')
+const { MAX_AGE_OF_COOKIE } = require('../constants')
+
 const ajv = new Ajv({ allErrors: true })
 addFormats(ajv)
 require('ajv-errors')(ajv /*, {singleError: true} */)
@@ -197,6 +199,12 @@ const activateUser = async (req, res) => {
             User.where({ email: email }).update({ $set: { active: true } }, () => {
               // java integration happens here
               javaIntegration.sendUser(email)
+              res.cookie('session_login', existingUser.login, {
+                maxAge: MAX_AGE_OF_COOKIE,
+                sameSite: 'None',
+                secure: true,
+                httpOnly: true
+              })
               errors.general.push('Aktywacja udana')
               res.status(200).send(errors).end()
             })
