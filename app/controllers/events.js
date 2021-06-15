@@ -200,7 +200,29 @@ const listOfEvents = async (req, res) => {
   }
 }
 
+const findEvent = async (req, res) => {
+  const errors = {
+    fields: {},
+    general: []
+  }
+
+  const id = req.params.id
+
+  try {
+    const event = await Event.findOne({ _id: id })
+    if (!event) {
+      errors.general.push('Wydarzenie o podanym id nie istnieje')
+      return res.status(404).send(errors)
+    }
+    return res.status(200).send(event)
+  } catch (err) {
+    errors.general.push('Wysłanie wydarzenia nie powiodło się')
+    return res.status(500).send(errors)
+  }
+}
+
 exports.addEvent = addEvent
 exports.deleteEvent = deleteEvent
 exports.patchEvent = patchEvent
 exports.listOfEvents = listOfEvents
+exports.findEvent = findEvent

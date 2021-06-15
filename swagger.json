@@ -312,6 +312,37 @@
                     }
                 ]
             }
+        },
+        "/events/event/{id}": {
+            "get": {
+                "tags": [
+                    "event"
+                ],
+                "summary": "Get event by id",
+                "consumes": "application/json",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Event with given id does not exist"
+                    },
+                    "500": {
+                        "description": "Error"
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "Event id",
+                        "required": "true",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
         }
     },
     "definitions": {
