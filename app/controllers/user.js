@@ -107,12 +107,7 @@ const register = async (req, res, next) => {
     return res.status(500).send(errors).end()
   }
 
-  try{
-    gender = (title == 'Pan') ? 'MALE' : 'FEMALE' 
-  } catch (err) {
-    return res.status(500).send(errors).end()
-    return res.status(500).send(errors)
-  }
+  const gender = (title === 'Pan') ? 'MALE' : 'FEMALE'
 
   const createdUser = new User({
     firstName,
@@ -179,6 +174,7 @@ const activateUser = async (req, res) => {
     email,
     activationCode
   } = req.body
+
   try {
     await User.where({ email: email }).findOne((error, existingUser) => {
       if (error) {
@@ -199,8 +195,8 @@ const activateUser = async (req, res) => {
         } else if (existingUser.activationCode === activationCode) {
           try {
             User.where({ email: email }).update({ $set: { active: true } }, () => {
-              //java integration happens here
-              javaIntegration.sendUser(email)
+              // java integration happens here
+              javaIntegration.sendUser(User)
               errors.general.push('Aktywacja udana')
               res.status(200).send(errors).end()
             })
