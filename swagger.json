@@ -100,7 +100,7 @@
                     }, {
                         "in": "path",
                         "name": "id",
-                        "description": "Event id to delete",
+                        "description": "Event id to edit",
                         "required": "true",
                         "schema": {
                             "type": "string"
