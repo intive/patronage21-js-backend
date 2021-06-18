@@ -58,6 +58,7 @@ Update your .env
 ```batch
 PORT=
 ADDRESS=
+JAVA_ARRD=http://intive-patronage.pl
 ```
 
 In the project directory, you can run

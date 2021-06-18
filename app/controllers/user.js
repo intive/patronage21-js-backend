@@ -4,7 +4,7 @@ const emailSender = require('../services/mail-sender')
 const bcrypt = require('bcryptjs')
 const Ajv = require('ajv')
 const addFormats = require('ajv-formats')
-
+const javaIntegration = require('../utils/javaIntegration')
 const ajv = new Ajv({ allErrors: true })
 addFormats(ajv)
 require('ajv-errors')(ajv /*, {singleError: true} */)
@@ -21,6 +21,7 @@ const register = async (req, res, next) => {
   const {
     firstName,
     lastName,
+    title,
     email,
     phone,
     technologies,
@@ -106,10 +107,13 @@ const register = async (req, res, next) => {
     return res.status(500).send(errors).end()
   }
 
+  const gender = (title === 'Pan') ? 'MALE' : 'FEMALE'
+
   const createdUser = new User({
     firstName,
     lastName,
     email,
+    gender,
     phone,
     technologies,
     login,
@@ -191,7 +195,8 @@ const activateUser = async (req, res) => {
         } else if (existingUser.activationCode === activationCode) {
           try {
             User.where({ email: email }).update({ $set: { active: true } }, () => {
-              // sendEmail()
+              // java integration happens here
+              javaIntegration.sendUser(User)
               errors.general.push('Aktywacja udana')
               res.status(200).send(errors).end()
             })
