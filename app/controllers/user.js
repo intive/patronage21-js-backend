@@ -196,7 +196,7 @@ const activateUser = async (req, res) => {
           try {
             User.where({ email: email }).update({ $set: { active: true } }, () => {
               // java integration happens here
-              javaIntegration.sendUser(User)
+              javaIntegration.sendUser(email)
               errors.general.push('Aktywacja udana')
               res.status(200).send(errors).end()
             })
