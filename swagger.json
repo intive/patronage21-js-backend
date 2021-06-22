@@ -351,6 +351,7 @@
             "required": [
                 "firstName",
                 "lastName",
+                "title",
                 "email",
                 "phone",
                 "technologies",
@@ -379,6 +380,16 @@
                         "maxLength": "Nazwisko jest za długie",
                         "minLength": "Nazwisko musi mieć co najmniej 2 znaki",
                         "pattern": "Nazwisko może zawierać jedynie litery"
+                    }
+                },
+                "title": {
+                    "type": "string",
+                    "enum": [
+                        "Pan",
+                        "Pani"
+                    ],
+                    "errorMessage": {
+                        "enum": "Niedozwolona wartość"
                     }
                 },
                 "email": {
@@ -464,6 +475,7 @@
                 "required": {
                     "firstName": "Imie jest wymagane",
                     "lastName": "Nazwisko jest wymagane",
+                    "title": "Pan/Pani jest wymagane",
                     "email": "Email jest wymagany",
                     "phone": "Numer telefonu jest wymagany",
                     "technologies": "Proszę wybrać conajmniej jedną technologię",
