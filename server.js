@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const Ajv = require('ajv')
 const addFormats = require('ajv-formats')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 
 const ajv = new Ajv({ allErrors: true })
 addFormats(ajv)
@@ -14,14 +15,17 @@ const usersSampleRoutes = require('./app/routes/users-sample')
 const usersRoutes = require('./app/routes/user')
 const sendActivationCodeRoutes = require('./app/routes/sendActivationCode')
 const eventsRoutes = require('./app/routes/events')
+const cookieRoutes = require('./app/routes/cookie')
 dotenv.config()
 const connectDb = require('./config/connection')
 
 const app = express()
 
 app.use(cors({
-  origin: process.env.IS_PRODUCTION ? 'https://patronage21.herokuapp.com' : 'http://localhost:3000'
+  origin: process.env.IS_PRODUCTION ? 'https://patronage21.herokuapp.com' : 'http://localhost:3000',
+  credentials: true
 }))
+app.use(cookieParser())
 app.use(express.json())
 app.use(helmet())
 
@@ -36,6 +40,7 @@ app.use('/api/users-sample', usersSampleRoutes)
 app.use('/api', usersRoutes)
 app.use('/api/sendActivationCode', sendActivationCodeRoutes)
 app.use('/api/events', eventsRoutes)
+app.use('/api', cookieRoutes)
 
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./swagger.json')
